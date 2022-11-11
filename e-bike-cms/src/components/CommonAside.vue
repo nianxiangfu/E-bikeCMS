@@ -1,6 +1,6 @@
 <template>
     <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-        :collapse="isCollapse" background-color="#137C5D" text-color="#fff" active-text-color="#ffd04b">
+        :collapse="isCollapse" background-color="#137C5D" text-color="#fff" active-text-color="#ffd04b" :default-active="this.$route.path.substr(1)">
         <h3>标题</h3>
         <el-menu-item @click="clickMenu(item)" v-for="item in allowShowItem" :key="item.name" :index="item.name">
             <i :class="item.icon"></i>
@@ -24,6 +24,7 @@
         font-weight: 600;
     }
 }
+
 </style>
 
 <script>

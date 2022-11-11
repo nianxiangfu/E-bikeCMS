@@ -8,7 +8,7 @@
             <el-main>
                 <router-view></router-view>
             </el-main>
-            
+
         </el-container>
     </div>
 </template>
@@ -18,8 +18,13 @@ export default {
     data() {
         return {}
     },
-    components:{
+    components: {
         CommonAside
     }
 }
 </script>
+<style lang="less" scoped>
+.el-aside::-webkit-scrollbar {
+    display: none;
+}
+</style>
