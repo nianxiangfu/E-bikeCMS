@@ -27,4 +27,7 @@ export default {
     margin: 0;
     padding: 0
   }
+  // html, body, el-main, el-container,el-row,el-col, #tmp {
+  //   height: 100%;
+  // }
 </style>

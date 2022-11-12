@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <!-- <div> -->
         <!-- <h1>Main</h1> -->
         <el-container>
             <el-aside width="200px">
@@ -10,7 +10,7 @@
             </el-main>
 
         </el-container>
-    </div>
+    <!-- </div> -->
 </template>
 <script>
 import CommonAside from '../components/CommonAside.vue'

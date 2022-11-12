@@ -1,7 +1,7 @@
 <template>
     <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
         :collapse="isCollapse" background-color="#137C5D" text-color="#fff" active-text-color="#ffd04b" :default-active="this.$route.path.substr(1)">
-        <h3>标题</h3>
+        <h3>校园电动车充电桩预约系统</h3>
         <el-menu-item @click="clickMenu(item)" v-for="item in allowShowItem" :key="item.name" :index="item.name">
             <i :class="item.icon"></i>
             <span slot="title">{{ item.label }}</span>
@@ -22,6 +22,7 @@
         line-height: 48px;
         font-size: 20px;
         font-weight: 600;
+        margin: 20px;
     }
 }
 
@@ -35,10 +36,10 @@ export default {
             menuData: [
                 {
                     path: "/",
-                    name: "personinfo",
+                    name: "userinfo",
                     label: "个人信息管理",
                     icon: "el-icon-user-solid",
-                    url: "Home/Home"
+                    url: "Userinfo/Userinfo"
                 },
                 {
                     path: "/charging",
@@ -72,7 +73,7 @@ export default {
             console.log(key, keyPath);
         },
         clickMenu(item) {
-            if(this.$route.path != item.path && !(this.$route.path === "/personinfo" && item.path === '/')){
+            if(this.$route.path != item.path && !(this.$route.path === "/userinfo" && item.path === '/')){
                 this.$router.push(item.path);
             }
         }
