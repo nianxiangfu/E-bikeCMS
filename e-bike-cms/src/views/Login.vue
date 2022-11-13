@@ -13,8 +13,8 @@
     </el-form>
 </template>
 <script>
-import Mock from 'mockjs'
-import Cookie from 'js-cookie'
+// import Mock from 'mockjs'
+// import Cookie from 'js-cookie'
 export default {
     data() {
         return {
@@ -35,9 +35,9 @@ export default {
     methods: {
         submit(){
             // token信息
-            const token = Mock.Random.guid();
+            // const token = Mock.Random.guid();
             // 将token信息存入cookie用于不同页面间的通信
-            Cookie.set('token', token);
+            // Cookie.set('token', token);
         }
     }
 }

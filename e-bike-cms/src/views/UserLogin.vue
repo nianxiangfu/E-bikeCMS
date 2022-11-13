@@ -4,9 +4,9 @@
     <el-form-item label="用户名" prop="pass">
       <el-input v-model="user.name" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="邮箱" prop="checkPass">
-      <el-input  v-model="user.email" autocomplete="off"></el-input>
-    </el-form-item>
+<!--    <el-form-item label="邮箱" prop="checkPass">-->
+<!--      <el-input  v-model="user.email" autocomplete="off"></el-input>-->
+<!--    </el-form-item>-->
     <el-form-item label="密码" prop="age">
       <el-input type="password" v-model.number="user.password"></el-input>
     </el-form-item>
@@ -36,8 +36,8 @@ export default {
     // this method uses an if statement to determin if the data entered in the form is valid, and if there are errors pushes them to the errors array where they will be displayed by the template
     async checkForm() {
       this.errors = [];
-      if (!this.user.email) {
-        this.errors.push("Email required");
+      if (!this.user.name) {
+        this.errors.push("请输入学号");
         this.errorMessage = "Please enter an email address";
       }
       // if no errors then log the user in
@@ -53,7 +53,7 @@ export default {
       var found = false;
       for (const dataKey in data) {
         //console.log(data[dataKey])
-        if (data[dataKey].email === user.email) {
+        if (data[dataKey].name === user.name) {
           if (data[dataKey].password === user.password) {
             this.user.name = data[dataKey].name;
             this.user.id = data[dataKey].id;

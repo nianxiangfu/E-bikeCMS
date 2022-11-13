@@ -35,7 +35,7 @@ export default {
             isCollapse: false,
             menuData: [
                 {
-                    path: "/",
+                    path: "/userinfo",
                     name: "userinfo",
                     label: "个人信息管理",
                     icon: "el-icon-user-solid",
