@@ -78,6 +78,7 @@
 
 <script>
 import { getData } from '../api';
+import Cookie from 'js-cookie'
 export default {
     data() {
         return {
@@ -207,7 +208,9 @@ export default {
 
         },
         logout() {
-
+            // 清除cookie中的token信息
+            cookie.remove('token')
+            this.$router.push('/login')
         }
     },
     mounted() {

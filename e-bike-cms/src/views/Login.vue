@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="form" :rules="rules" class="login-container" :inline="true" label-width="70px">
+    <el-form :model="form" :rules="rules" class="login-container" :inline="true" label-width="70px" ref="form">
         <h3 class="login_title">系统登录</h3>
         <el-form-item label="用户名" prop="username">
             <el-input v-model="form.username" placeholder="请输入账号"></el-input>
@@ -34,10 +34,20 @@ export default {
     },
     methods: {
         submit(){
-            // token信息
-            const token = Mock.Random.guid();
-            // 将token信息存入cookie用于不同页面间的通信
-            Cookie.set('token', token);
+            // // token信息
+            // const token = Mock.Random.guid();
+            // // 将token信息存入cookie用于不同页面间的通信
+            // Cookie.set('token', token);
+
+
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    
+                }
+            });
+            getMenu();
+            // 跳转到首页
+            this.$router.push('/userinfo')
         }
     }
 }
