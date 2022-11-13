@@ -5,6 +5,7 @@ import UserInfo from '../views/UserInfo.vue'
 import Charging from '../views/Charging.vue'
 import Administrate from '../views/Administrate.vue'
 import Bulletin from '../views/Bulletin.vue'
+import Login from '../views/Login.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,8 +21,11 @@ const routes = [
             {path: 'administrate', component: Administrate},
             {path: 'bulletin', component: Bulletin},
         ]
+    },
+    {
+        path: '/login',
+        component: Login
     }
-    
 ]
 
 const router = new VueRouter({

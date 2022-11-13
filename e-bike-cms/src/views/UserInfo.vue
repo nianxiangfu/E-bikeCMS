@@ -16,6 +16,9 @@
                             <p v-if="userInfo.isAdmin" class="user-access">超级管理员</p>
                             <p v-else class="user-access">普通用户</p>
                         </div>
+                        <div class="btn">
+                            <el-button type="danger" @click="logout">退出账户</el-button>
+                        </div>
                     </div>
                 </el-card>
                 <el-card class="box-card" id="chargingInfoCard">
@@ -56,7 +59,8 @@
             <el-card class="box-card" id="recordInfoCard">
                 <div slot="header" class="clearfix"> <span>预约记录</span></div>
                 <div>
-                    <el-table :data="tableData" stripe style="width: 100%" :row-style="{height: '60px'}" :key="itemKey" ref="table">
+                    <el-table :data="tableData" stripe style="width: 100%" :row-style="{ height: '60px' }"
+                        :key="itemKey" ref="table">
                         <el-table-column prop="date" label="日期" width="180" align="center">
                         </el-table-column>
                         <el-table-column prop="area" label="充电区域" align="center">
@@ -73,6 +77,7 @@
 </template>
 
 <script>
+import { getData } from '../api';
 export default {
     data() {
         return {
@@ -163,7 +168,7 @@ export default {
             });
             if (status) {
                 this.chargingStatus = null;
-                updataRecordInfo();
+                this.updataRecordInfo();
             }
         },
         pay() {
@@ -184,23 +189,30 @@ export default {
                 this.paymentRecord = null;
             }
         },
-        updataRecordInfo(){
+        updataRecordInfo() {
             this.tableData[0].status = "已履约";
+            // table数据更新后，刷新表格控件
             this.itemKey = Math.random()
         },
-        getChargingStatus(){
+        getChargingStatus() {
 
         },
-        getPaymentRecord(){
-            
+        getPaymentRecord() {
+
         },
-        getUserInfo(){
-            
+        getUserInfo() {
+
         },
-        getRecordInfo(){
+        getRecordInfo() {
+
+        },
+        logout() {
 
         }
-    }
+    },
+    mounted() {
+        getData().then((data) => console.log(data))
+    },
 }
 </script>
 
@@ -208,6 +220,11 @@ export default {
 .user {
     display: flex;
     align-items: center;
+
+    .btn {
+        // text-align: center;
+        margin-left: 200px;
+    }
 
     .user-avatar {
         margin-right: 40px;
@@ -254,18 +271,21 @@ export default {
     margin-bottom: 25px;
     height: 180px;
 }
+
 #chargingInfoCard {
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 20px;
     height: 240px;
 }
+
 #paymentInfoCard {
     overflow-y: auto;
     overflow-x: hidden;
     // margin-bottom: 10px;
     height: 300px;
 }
+
 #recordInfoCard {
     overflow-y: auto;
     overflow-x: hidden;
