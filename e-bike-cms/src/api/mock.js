@@ -6,3 +6,12 @@ Mock.mock('/api/userinfo/getData', function(){
     console.log("拦截到了");
     return 1;
 })
+
+Mock.mock('/api/login/loginRequest', 'post', (data) => {
+    return {
+        data: {
+            token: Mock.Random.guid(),
+            status: 0
+        }
+    }
+})

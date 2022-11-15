@@ -13,11 +13,15 @@
                             <p class="user-number">
                                 {{ userInfo.number }}
                             </p>
-                            <p v-if="userInfo.isAdmin" class="user-access">超级管理员</p>
-                            <p v-else class="user-access">普通用户</p>
+                            <!-- <p v-if="userInfo.isAdmin" class="user-school">超级管理员</p>
+                            <p v-else class="user-school">普通用户</p> -->
+                            <!-- <p>{{ userInfo.school }}</p> -->
                         </div>
                         <div class="btn">
-                            <el-button type="danger" @click="logout">退出账户</el-button>
+                            <el-popconfirm title="确定退出当前账户吗吗？" @confirm="logout">
+                                <!-- <el-button slot="reference">删除</el-button> -->
+                                <el-button type="danger" slot="reference">退出账户</el-button>
+                            </el-popconfirm>
                         </div>
                     </div>
                 </el-card>
@@ -135,8 +139,9 @@ export default {
                 no: 55
             }],
             userInfo: {
-                isAdmin: false,
-                number: 2019302110229,
+                // isAdmin: false,
+                // school: "计算机学院",
+                number: Cookie.get("username"),
             },
             chargingStatus: {
                 area: '信息学部竹园充电区',
@@ -201,15 +206,13 @@ export default {
         getPaymentRecord() {
 
         },
-        getUserInfo() {
-
-        },
         getRecordInfo() {
 
         },
         logout() {
             // 清除cookie中的token信息
-            cookie.remove('token')
+            Cookie.remove('token')
+            Cookie.remove('username')
             this.$router.push('/login')
         }
     },
@@ -239,7 +242,7 @@ export default {
             margin-bottom: 10px;
         }
 
-        .user-access {
+        .user-school {
             color: #999999;
         }
     }

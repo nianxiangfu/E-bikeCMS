@@ -17,15 +17,16 @@ const routes = [
         redirect: "/userinfo",
         children: [
             // 子路由（嵌套路由）
-            {path: 'userinfo', component: UserInfo},
+            {path: 'userinfo', component: UserInfo, name: 'userinfo'},
             {path: 'charging', component: Charging},
-            {path: 'administrate', component: Administrate},
+            // {path: 'administrate', component: Administrate},
             {path: 'bulletin', component: Bulletin},
             {path: 'userlogin',component: UserLogin}
         ]
     },
     {
         path: '/login',
+        name: 'login',
         component: Login
     }
 ]

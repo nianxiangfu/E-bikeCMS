@@ -1,8 +1,8 @@
 <template>
     <el-form :model="form" :rules="rules" class="login-container" :inline="true" label-width="70px" ref="form">
         <h3 class="login_title">系统登录</h3>
-        <el-form-item label="用户名" prop="username">
-            <el-input v-model="form.username" placeholder="请输入账号"></el-input>
+        <el-form-item label="学工号" prop="username">
+            <el-input v-model="form.username" placeholder="请输入学工号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
             <el-input type="password" v-model="form.password" placeholder="请输入密码"></el-input>
@@ -13,8 +13,9 @@
     </el-form>
 </template>
 <script>
-// import Mock from 'mockjs'
-// import Cookie from 'js-cookie'
+import Mock from 'mockjs'
+import Cookie from 'js-cookie'
+import { loginRequest } from '../api';
 export default {
     data() {
         return {
@@ -24,7 +25,7 @@ export default {
             },
             rules: {
                 username: [
-                    { required: true, trigger: 'blur', message: '请输入用户名' }
+                    { required: true, trigger: 'blur', message: '请输入学工号' }
                 ],
                 password: [
                     { required: true, trigger: 'blur', message: '请输入密码' }
@@ -34,25 +35,28 @@ export default {
     },
     methods: {
         submit(){
-<<<<<<< HEAD
             // // token信息
             // const token = Mock.Random.guid();
             // // 将token信息存入cookie用于不同页面间的通信
             // Cookie.set('token', token);
-
-
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    
+                    loginRequest(this.form).then(({data}) => {
+                        console.log(data)
+                        if (data.data.status === 0) {
+                            Cookie.set('token', data.data.token)
+                            Cookie.set('username', this.form.username)
+                            this.$message.success('登陆成功')
+                            // 跳转到首页
+                            this.$router.push('/userinfo')
+                        } else if(data.status === 1){
+                            this.$message.error('密码错误')
+                        } else {
+                            this.$message.error('未知错误，请稍后重试或联系管理员')
+                        }
+                    })
                 }
             });
-            getMenu();
-            // 跳转到首页
-            this.$router.push('/userinfo')
-            // token信息
-            // const token = Mock.Random.guid();
-            // 将token信息存入cookie用于不同页面间的通信
-            // Cookie.set('token', token);
         }
     }
 }

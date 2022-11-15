@@ -48,13 +48,13 @@ export default {
                     icon: "el-icon-document-add",
                     url: "Charging/Charging"
                 },
-                {
-                    path: "/administrate",
-                    name: "administrate",
-                    label: "充电桩管理",
-                    icon: "el-icon-s-management",
-                    url: "Administrate/Administrate"
-                },
+                // {
+                //     path: "/administrate",
+                //     name: "administrate",
+                //     label: "充电桩管理",
+                //     icon: "el-icon-s-management",
+                //     url: "Administrate/Administrate"
+                // },
                 {
                     path: "/bulletin",
                     name: "bulletin",
