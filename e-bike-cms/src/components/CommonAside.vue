@@ -35,11 +35,11 @@ export default {
             isCollapse: false,
             menuData: [
                 {
-                    path: "/userinfo",
-                    name: "userinfo",
+                    path: "/user",
+                    name: "user",
                     label: "个人信息管理",
                     icon: "el-icon-user-solid",
-                    url: "Userinfo/Userinfo"
+                    url: "User/User"
                 },
                 {
                     path: "/charging",
@@ -73,7 +73,7 @@ export default {
             console.log(key, keyPath);
         },
         clickMenu(item) {
-            if(this.$route.path != item.path && !(this.$route.path === "/userinfo" && item.path === '/')){
+            if(this.$route.path != item.path && !(this.$route.path === "/user" && item.path === '/')){
                 this.$router.push(item.path);
             }
         }

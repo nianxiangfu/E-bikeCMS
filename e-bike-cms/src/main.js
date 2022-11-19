@@ -28,3 +28,6 @@ new Vue({
   router,
   render: h => h(App),
 }).$mount('#app')
+
+export const stationList = ["湖滨", "桂园", "枫十四", "信部竹园", "经管院", "医学部", "枫五", "工三"]
+export const statusList = [""]

@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="30">
-        <el-col :span="12">
+        <el-col :span="11">
             <div class="grid-content bg-purple">
                 <el-card class="box-card" id="userInfoCard">
                     <div slot="header" class="clearfix"><span>个人基本信息</span></div>
@@ -33,7 +33,7 @@
                             <p>当前充电桩编号：<span>{{ chargingStatus.no }}</span></p>
                             <p>使用时段：<span>{{ chargingStatus.startTime }} - {{ chargingStatus.endTime }}</span></p>
                             <div class="btn">
-                                <el-button type="danger" @click="cancelReservation">释放充电桩</el-button>
+                                <el-button type="danger" @click="cancelEvent">释放充电桩</el-button>
                             </div>
                         </div>
                         <el-empty v-else description="暂无使用的充电桩" image-size="20" class="empty"></el-empty>
@@ -42,14 +42,14 @@
                 <el-card class="box-card" id="paymentInfoCard">
                     <div slot="header" class="clearfix"><span>当前缴费状态</span></div>
                     <div>
-                        <div v-if="paymentRecord" class="payment-info">
+                        <div v-if="paymentStatus" class="payment-info">
                             <h3>您有一笔未缴费记录，请缴费之后再预约充电桩！</h3>
-                            <p>充电区：<span>{{ paymentRecord.area }}</span></p>
-                            <p>充电桩编号：<span>{{ paymentRecord.no }}</span></p>
-                            <p>使用时段：<span>{{ paymentRecord.startTime }} - {{ paymentRecord.endTime }}</span></p>
-                            <p>缴费金额：<span>{{ paymentRecord.cost }} 元</span></p>
+                            <p>充电区：<span>{{ paymentStatus.area }}</span></p>
+                            <p>充电桩编号：<span>{{ paymentStatus.no }}</span></p>
+                            <p>使用时段：<span>{{ paymentStatus.startTime }} - {{ paymentStatus.endTime }}</span></p>
+                            <p>缴费金额：<span>{{ paymentStatus.cost }} 元</span></p>
                             <div class="btn">
-                                <el-button type="primary" @click="pay">缴费</el-button>
+                                <el-button type="primary" @click="payEvent">缴费</el-button>
                             </div>
                         </div>
                         <el-empty v-else description="暂无需要缴费的条目" image-size="20" class="empty"></el-empty>
@@ -58,20 +58,22 @@
             </div>
         </el-col>
 
-        <el-col :span="12">
+        <el-col :span="13">
             <div class="grid-content bg-purple-light"></div>
             <el-card class="box-card" id="recordInfoCard">
                 <div slot="header" class="clearfix"> <span>预约记录</span></div>
                 <div>
-                    <el-table :data="tableData" stripe style="width: 100%" :row-style="{ height: '60px' }"
+                    <el-table :data="recordList" stripe style="width: 100%" :row-style="{ height: '60px' }"
                         :key="itemKey" ref="table">
-                        <el-table-column prop="date" label="日期" width="180" align="center">
+                        <el-table-column prop="startTime" label="开始时期" align="center">
+                        </el-table-column>
+                        <el-table-column prop="startTime" label="结束时期" align="center">
                         </el-table-column>
                         <el-table-column prop="area" label="充电区域" align="center">
                         </el-table-column>
                         <el-table-column prop="no" label="充电桩编号" align="center">
                         </el-table-column>
-                        <el-table-column prop="status" label="状态" width="180" align="center">
+                        <el-table-column prop="status" label="状态" align="center">
                         </el-table-column>
                     </el-table>
                 </div>
@@ -81,75 +83,38 @@
 </template>
 
 <script>
-import { getData } from '../api';
+import { getData, queryChargingStatus, queryPaymentStatus, queryRecords, cancelReservation, releasePile, pay } from '../api';
 import Cookie from 'js-cookie'
+import { stationList, statusList } from '@/main'
 export default {
     data() {
         return {
             // status: 充电中，已履约，已取消，已预约，失约
-            tableData: [{
-                date: '2016-05-04',
+            recordList: [{
+                startTime: '2022-11-03 12:04',
+                endTime: '2022-11-03 12:04',
                 status: '充电中',
                 area: '信息学部竹园充电区',
                 no: 3
             }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
-                status: '已取消',
-                area: '文理学部桂园充电区',
-                no: 55
-            }, {
-                date: '2016-05-03',
+                startTime: '2022-11-03 12:04',
+                endTime: '2022-11-03 12:04',
                 status: '已取消',
                 area: '文理学部桂园充电区',
                 no: 55
             }],
+            stationList: stationList,
+            statusList: statusList,
             userInfo: {
-                // isAdmin: false,
-                // school: "计算机学院",
                 number: Cookie.get("username"),
             },
             chargingStatus: {
                 area: '信息学部竹园充电区',
                 no: 3,
                 startTime: "2016-05-04 18:00",
-                endTime: "2016-05-04 18:00",
+                startTime: "2016-05-04 18:00",
             },
-            paymentRecord: {
+            paymentStatus: {
                 area: '信息学部竹园充电区',
                 no: 3,
                 startTime: "2016-05-04 18:00",
@@ -159,10 +124,21 @@ export default {
         }
     },
     methods: {
-        cancelReservation() {
-            // todo: 向后端发送取消预约请求，获取返回值，根据返回状态显示弹窗
-            var status = true;
-            var content = status ? "取消预约成功！" : "未知错误，取消预约失败，请稍后重试！";
+        cancelEvent() {
+            var content = ''
+            cancelReservation({"token": Cookie.get('token')}).then(({data}) => {
+                if (data.info.code === '0'){
+                    if (data.data.status === 0){
+                        content = "取消预约成功！"
+                        this.chargingStatus = null;
+                        this.updataRecordInfo(2);
+                    }else{
+                        content = "取消预约失败！"
+                    }
+                }else{
+                    content = "未知错误，取消预约失败，请稍后重试！"
+                }
+            })
             this.$alert(content, '提示', {
                 confirmButtonText: '确定',
                 // callback: action => {
@@ -172,48 +148,70 @@ export default {
                 //     });
                 // }
             });
-            if (status) {
-                this.chargingStatus = null;
-                this.updataRecordInfo();
-            }
         },
-        pay() {
-            // status取值：1（缴费成功），2（校园卡欠费导致缴费失败），3（未知错误导致缴费失败）
-            var status = 1;
-            var content = null;
-            if (status == 1) {
-                content = "缴费成功！"
-            } else if (status == 2) {
-                content = "缴费失败，账户余额不足，请充值后重新缴费！"
-            } else if (status == 3) {
-                content = "未知错误，缴费失败，请稍后重试！"
-            }
+        payEvent() {
+            var content = ''
+            // todo: 向后端发送取消预约请求，获取返回值，根据返回状态显示弹窗
+            pay({"token": Cookie.get('token')}).then(({data}) => {
+                if (data.info.code === '0'){
+                    if (data.data.status === 0){
+                        content = "缴费成功！"
+                        this.paymentStatus = null;
+                    }else{
+                        content = "缴费失败！"
+                    }
+                }else{
+                    content = "未知错误，缴费失败，请稍后重试！"
+                }
+            })
             this.$alert(content, '提示', {
                 confirmButtonText: '确定',
             });
-            if (status == 1) {
-                this.paymentRecord = null;
-            }
         },
-        updataRecordInfo() {
-            this.tableData[0].status = "已履约";
+        updataRecordInfo(status) {
+            this.recordList[0].status = status;
             // table数据更新后，刷新表格控件
             this.itemKey = Math.random()
         },
         getChargingStatus() {
-
+            queryChargingStatus({"token": Cookie.get('token')}).then(({data}) => {
+                this.chargingStatus = data.data
+            })
         },
-        getPaymentRecord() {
-
+        getPaymentStatus() {
+            queryPaymentStatus({"token": Cookie.get('token')}).then(({data}) => {
+                this.paymentStatus = data.data
+            })
         },
-        getRecordInfo() {
-
+        getRecords() {
+            queryRecords({"token": Cookie.get('token')}).then(({data}) => {
+                this.recordList = data.data
+            })
         },
         logout() {
             // 清除cookie中的token信息
             Cookie.remove('token')
             Cookie.remove('username')
             this.$router.push('/login')
+        },
+        releaseEvent () {
+            var content = ''
+            releasePile({"token": Cookie.get('token')}).then(({data}) => {
+                if (data.info.code === '0'){
+                    if (data.data.status === 0){
+                        content = "释放成功！"
+                        this.chargingStatus = null;
+                        this.updataRecordInfo(1);
+                    }else{
+                        content = "释放失败！"
+                    }
+                }else{
+                    content = "未知错误，释放失败，请稍后重试！"
+                }
+            })
+            this.$alert(content, '提示', {
+                confirmButtonText: '确定',
+            });
         }
     },
     mounted() {
@@ -228,8 +226,7 @@ export default {
     align-items: center;
 
     .btn {
-        // text-align: center;
-        margin-left: 200px;
+        margin-left: 120px;
     }
 
     .user-avatar {

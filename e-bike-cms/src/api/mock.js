@@ -1,17 +1,21 @@
 import Mock from "mockjs";
 
 // 定义mock请求拦截
-Mock.mock('/api/userinfo/getData', function(){
+Mock.mock('/api/user/getData', function () {
     // 拦截到请求后的处理逻辑
     console.log("拦截到了");
     return 1;
 })
 
-Mock.mock('/api/login/loginRequest', 'post', (data) => {
+Mock.mock('/api/user/login', 'post', (data) => {
     return {
+        status: 200,
+        info: {
+            code: "0",
+            message: "success"
+        },
         data: {
-            token: Mock.Random.guid(),
-            status: 0
+            token: "RWQREIRMSFJDA3190238FJLSFSED231S12"
         }
     }
 })

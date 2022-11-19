@@ -15,7 +15,8 @@
 <script>
 import Mock from 'mockjs'
 import Cookie from 'js-cookie'
-import { loginRequest } from '../api';
+// import Cookies from 'js-cookie'
+import { login } from '../api'
 export default {
     data() {
         return {
@@ -41,16 +42,16 @@ export default {
             // Cookie.set('token', token);
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    loginRequest(this.form).then(({data}) => {
+                    login(this.form).then(({data}) => {
                         console.log(data)
-                        if (data.data.status === 0) {
+                        if (data.info.code === "0") {
                             Cookie.set('token', data.data.token)
                             Cookie.set('username', this.form.username)
                             this.$message.success('登陆成功')
                             // 跳转到首页
-                            this.$router.push('/userinfo')
-                        } else if(data.status === 1){
-                            this.$message.error('密码错误')
+                            this.$router.push('/user')
+                        } else if(data.info.code === "1"){
+                            this.$message.error(data.info.message)
                         } else {
                             this.$message.error('未知错误，请稍后重试或联系管理员')
                         }
